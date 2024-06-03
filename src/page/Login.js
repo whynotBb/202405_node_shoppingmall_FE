@@ -32,6 +32,11 @@ const Login = () => {
             navigate("/");
         }
     }, [user]);
+
+    // 컴포넌트가 시작될때 에러가 있으면 지우기
+    useEffect(() => {
+        dispatch(userActions.clearError());
+    }, []);
     return (
         <>
             <Container className="login-area">

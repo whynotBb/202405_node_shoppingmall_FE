@@ -18,7 +18,7 @@ const AppLayout = ({ children }) => {
     useEffect(() => {
         dispatch(userActions.loginWithToken());
     }, []);
-
+    
     return (
         <div>
             <ToastMessage />

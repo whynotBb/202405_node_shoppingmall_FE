@@ -14,7 +14,7 @@ const loginWithToken = () => async (dispatch) => {
         }
         console.log(response.data.user);
         dispatch({
-            type: types.LOGIN_WITH_TOKEN_SUCESS,
+            type: types.LOGIN_WITH_TOKEN_SUCCESS,
             payload: response.data.user,
         });
     } catch (error) {
@@ -66,10 +66,16 @@ const registerUser =
             dispatch(commonUiActions.showToastMessage(error.error, "error"));
         }
     };
+
+    const clearError = () => async (dispatch) => {
+        dispatch({type:types.CLEAR_ERROR})
+    };
+
 export const userActions = {
     loginWithToken,
     loginWithEmail,
     logout,
     loginWithGoogle,
     registerUser,
+    clearError
 };

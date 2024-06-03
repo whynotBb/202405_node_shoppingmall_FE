@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Container, Form, Button, Alert} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router';
@@ -18,7 +18,11 @@ const RegisterPage = () => {
     const [passwordError, setPasswordError] = useState('');
     const [policyError, setPolicyError] = useState(false);
     const error = useSelector((state) => state.user.error);
-
+    
+    // 컴포넌트가 시작될때 에러가 있으면 지우기
+    useEffect(() => {
+        dispatch(userActions.clearError());
+    }, []);
     const register = async (event) => {
         event.preventDefault();
         console.log(formData);
