@@ -40,7 +40,7 @@ const Navbar = ({ user }) => {
     const logout = () => {
         dispatch(userActions.logout());
     };
-    console.log("user - ", user);
+    console.log("nav bar user - ", user);
     return (
         <div>
             {showSearchBox && (
