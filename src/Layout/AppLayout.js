@@ -16,7 +16,7 @@ const AppLayout = ({ children }) => {
 
     const { user } = useSelector((state) => state.user); // test 용
     //const { user } = useSelector((state) => state.user.user); // 배포용
-    console.log("app layout ", user.user);
+    console.log("app layout ", user?.user);
     useEffect(() => {
         dispatch(userActions.loginWithToken());
     }, []);
