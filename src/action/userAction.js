@@ -12,7 +12,7 @@ const loginWithToken = () => async (dispatch) => {
         if (response.status !== 200) {
             throw new Error(response.Error);
         }
-        console.log(response.data.user);
+        // console.log(response.data.user);
         dispatch({
             type: types.LOGIN_WITH_TOKEN_SUCCESS,
             payload: response.data.user,
@@ -67,9 +67,9 @@ const registerUser =
         }
     };
 
-    const clearError = () => async (dispatch) => {
-        dispatch({type:types.CLEAR_ERROR})
-    };
+const clearError = () => async (dispatch) => {
+    dispatch({ type: types.CLEAR_ERROR });
+};
 
 export const userActions = {
     loginWithToken,
@@ -77,5 +77,5 @@ export const userActions = {
     logout,
     loginWithGoogle,
     registerUser,
-    clearError
+    clearError,
 };
