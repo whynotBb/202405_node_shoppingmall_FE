@@ -32,7 +32,10 @@ const loginWithEmail =
                 throw new Error(response.error);
             }
             sessionStorage.setItem("token", response.data.token);
-            dispatch({ type: types.LOGIN_SUCCESS, payload: response.data });
+            dispatch({
+                type: types.LOGIN_SUCCESS,
+                payload: response.data.user,
+            });
         } catch (error) {
             dispatch({ type: types.LOGIN_FAIL, payload: error.error });
         }
