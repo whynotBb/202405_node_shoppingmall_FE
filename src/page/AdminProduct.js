@@ -9,10 +9,12 @@ import ReactPaginate from "react-paginate";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { commonUiActions } from "../action/commonUiAction";
 import ProductTable from "../component/ProductTable";
+import { logRoles } from "@testing-library/react";
 
 const AdminProduct = () => {
     const navigate = useNavigate();
-    const productList = useSelector((state) => state.product.productList);
+    const { productList, totalPageNum } = useSelector((state) => state.product);
+    console.log("admin!!!!!!!!!", productList, totalPageNum);
     const [query, setQuery] = useSearchParams();
     const dispatch = useDispatch();
     const [showDialog, setShowDialog] = useState(false);
@@ -34,11 +36,20 @@ const AdminProduct = () => {
     ];
     // 페이지 열리면 상품 보여주기
     useEffect(() => {
-        dispatch(productActions.getProductList());
-    }, []);
+        dispatch(productActions.getProductList({ ...searchQuery }));
+    }, [query]);
 
     useEffect(() => {
         //검색어나 페이지가 바뀌면 url바꿔주기 (검색어또는 페이지가 바뀜 => url 바꿔줌=> url쿼리 읽어옴=> 이 쿼리값 맞춰서  상품리스트 가져오기)
+        if (searchQuery.name === "") {
+            delete searchQuery.name;
+        }
+        console.log(searchQuery);
+        // 객체를 쿼리 형태로 만들고 URLSearchParams > 스트링으로 바꿔 사용한다.
+        const params = new URLSearchParams(searchQuery);
+        const query = params.toString();
+        console.log(query);
+        navigate("?" + query);
     }, [searchQuery]);
 
     const deleteItem = (id) => {
@@ -59,8 +70,11 @@ const AdminProduct = () => {
 
     const handlePageClick = ({ selected }) => {
         //  쿼리에 페이지값 바꿔주기
+        console.log(selected);
+        setSearchQuery({ ...searchQuery, page: selected + 1 });
     };
-
+    // searchbox 의 값을 읽어온다. > 엔터 치면, searchQuery 객체가업데이트됨 > searchQuery 객체 안에 아이템 기준으로 url 을 새로 생성하여 호출한다. &name = 스트레이트+팬츠
+    // url 쿼리 읽어오기 > url 쿼리 기준으로 BE에 검색조건과 함께 호출
     return (
         <div className="locate-center">
             <Container>
@@ -86,8 +100,8 @@ const AdminProduct = () => {
                     nextLabel="next >"
                     onPageChange={handlePageClick}
                     pageRangeDisplayed={5}
-                    pageCount={100}
-                    forcePage={2} // 1페이지면 2임 여긴 한개씩 +1 해야함
+                    pageCount={totalPageNum}
+                    forcePage={searchQuery.page - 1} // 1페이지면 2임 여긴 한개씩 +1 해야함
                     previousLabel="< previous"
                     renderOnZeroPageCount={null}
                     pageClassName="page-item"
@@ -101,7 +115,7 @@ const AdminProduct = () => {
                     breakLinkClassName="page-link"
                     containerClassName="pagination"
                     activeClassName="active"
-                    className="display-center list-style-none"
+                    className="display-center list-style-none paginationWrap"
                 />
             </Container>
 

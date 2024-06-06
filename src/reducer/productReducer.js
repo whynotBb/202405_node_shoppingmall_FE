@@ -3,6 +3,7 @@ const initialState = {
     loading: false,
     error: "",
     productList: [],
+    totalPageNum: 1,
 };
 
 function productReducer(state = initialState, action) {
@@ -18,7 +19,8 @@ function productReducer(state = initialState, action) {
                 ...state,
                 loading: false,
                 error: "",
-                productList: payload,
+                productList: payload.data,
+                totalPageNum: payload.totalPageNum,
             };
         case types.PRODUCT_CREATE_FAIL:
         case types.PRODUCT_GET_FAIL:
