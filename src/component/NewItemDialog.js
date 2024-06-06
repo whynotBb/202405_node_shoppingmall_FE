@@ -7,6 +7,10 @@ import { CATEGORY, STATUS, SIZE } from "../constants/product.constants";
 import "../style/adminProduct.style.css";
 import * as types from "../constants/product.constants";
 import { commonUiActions } from "../action/commonUiAction";
+import { Cloudinary } from "@cloudinary/url-gen";
+
+const CLOUDINARY_CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_PRESET = process.env.REACT_APP_CLOUDINARY_PRESET;
 
 const InitialFormData = {
     name: "",
@@ -29,18 +33,48 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     const [stock, setStock] = useState([]);
     const dispatch = useDispatch();
     const [stockError, setStockError] = useState(false);
+
+    const [cloudName] = useState(CLOUDINARY_CLOUD_NAME);
+    const [uploadPreset] = useState(CLOUDINARY_PRESET);
+
+    const [uwConfig] = useState({
+        cloudName,
+        uploadPreset,
+    });
+
+    const cld = new Cloudinary({
+        cloud: {
+            cloudName,
+        },
+    });
+
     const handleClose = () => {
         //모든걸 초기화시키고;
         // 다이얼로그 닫아주기
+        setShowDialog(false);
     };
     console.log("stock -", stock);
     const handleSubmit = (event) => {
         event.preventDefault();
+
         //재고를 입력했는지 확인, 아니면 에러
+        if (stock.length === 0) {
+            return setStockError(true);
+        }
+
         // 재고를 배열에서 객체로 바꿔주기
-        // [['M',2]] 에서 {M:2}로
+
+        // [['M',2]] 에서 {M:2}로 parseInt - 숫자로
+        const totalStock = stock.reduce((total, item) => {
+            return { ...total, [item[0]]: parseInt(item[1]) };
+        }, {});
+        console.log("formData", formData);
         if (mode === "new") {
             //새 상품 만들기
+            dispatch(
+                productActions.createProduct({ ...formData, stock: totalStock })
+            );
+            setShowDialog(false);
         } else {
             // 상품 수정하기
         }
@@ -67,6 +101,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         //  재고 사이즈 변환하기
         const newStock = [...stock];
         newStock[index][0] = value;
+        console.log("재고 사이즈", newStock);
         setStock(newStock);
     };
 
@@ -74,10 +109,12 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         //재고 수량 변환하기
         const newStock = [...stock];
         newStock[index][1] = value;
+        console.log("재고 수량 변환하기", newStock);
         setStock(newStock);
     };
 
     const onHandleCategory = (event) => {
+        // 카테고리가 이미 추가 되어있으면 제거
         if (formData.category.includes(event.target.value)) {
             const newCategory = formData.category.filter(
                 (item) => item !== event.target.value
@@ -87,6 +124,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                 category: [...newCategory],
             });
         } else {
+            // 아니면 추가
             setFormData({
                 ...formData,
                 category: [...formData.category, event.target.value],
@@ -96,6 +134,8 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
     const uploadImage = (url) => {
         //이미지 업로드
+        console.log("url", url);
+        setFormData({ ...formData, image: url });
     };
 
     useEffect(() => {
@@ -238,8 +278,10 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
                 <Form.Group className="mb-3" controlId="Image" required>
                     <Form.Label>Image</Form.Label>
-                    <CloudinaryUploadWidget uploadImage={uploadImage} />
-
+                    <CloudinaryUploadWidget
+                        uwConfig={uwConfig}
+                        setFormData={setFormData}
+                    />
                     <img
                         id="uploadedimage"
                         src={formData.image}
