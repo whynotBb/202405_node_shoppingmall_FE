@@ -4,11 +4,11 @@ import { commonUiActions } from "./commonUiAction";
 import * as commonTypes from "../constants/commonUI.constants";
 const loginWithToken = () => async (dispatch) => {
     const token = sessionStorage.getItem("token");
-    console.log(token);
+    //console.log(token);
     try {
         dispatch({ type: types.LOGIN_WITH_TOKEN_REQUEST });
         const response = await api.get("/user/me");
-        console.log("success", response);
+
         if (response.status !== 200) {
             throw new Error(response.Error);
         }

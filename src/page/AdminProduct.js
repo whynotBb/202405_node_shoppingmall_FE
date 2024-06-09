@@ -6,16 +6,18 @@ import { productActions } from "../action/productAction";
 import NewItemDialog from "../component/NewItemDialog";
 import * as types from "../constants/product.constants";
 import ReactPaginate from "react-paginate";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { commonUiActions } from "../action/commonUiAction";
 import ProductTable from "../component/ProductTable";
 import { logRoles } from "@testing-library/react";
 
 const AdminProduct = () => {
     const navigate = useNavigate();
+
     const { productList, totalPageNum } = useSelector((state) => state.product);
-    console.log("admin!!!!!!!!!", productList, totalPageNum);
+    //console.log("admin!!!!!!!!!", productList, totalPageNum);
     const [query, setQuery] = useSearchParams();
+
     const dispatch = useDispatch();
     const [showDialog, setShowDialog] = useState(false);
     const [searchQuery, setSearchQuery] = useState({
@@ -34,10 +36,6 @@ const AdminProduct = () => {
         "Status",
         "",
     ];
-    // 페이지 열리면 상품 보여주기
-    useEffect(() => {
-        dispatch(productActions.getProductList({ ...searchQuery }));
-    }, [query]);
 
     useEffect(() => {
         //검색어나 페이지가 바뀌면 url바꿔주기 (검색어또는 페이지가 바뀜 => url 바꿔줌=> url쿼리 읽어옴=> 이 쿼리값 맞춰서  상품리스트 가져오기)
@@ -48,17 +46,27 @@ const AdminProduct = () => {
         // 객체를 쿼리 형태로 만들고 URLSearchParams > 스트링으로 바꿔 사용한다.
         const params = new URLSearchParams(searchQuery);
         const query = params.toString();
-        console.log(query);
+        console.log("admin query", query);
         navigate("?" + query);
     }, [searchQuery]);
 
+    // 페이지 열리면 상품 보여주기
+
+    useEffect(() => {
+        dispatch(productActions.getProductList({ ...searchQuery }));
+    }, [query]);
     const deleteItem = (id) => {
-        //아이템 삭제하가ㅣ
+        //아이템 삭제하가
+        dispatch(productActions.deleteProduct(id));
+        // dispatch(productActions.getProductList());
     };
 
     const openEditForm = (product) => {
         //edit모드로 설정하고
+        setMode("edit");
         // 아이템 수정다이얼로그 열어주기
+        dispatch({ type: types.SET_SELECTED_PRODUCT, payload: product });
+        setShowDialog(true);
     };
 
     const handleClickNewItem = () => {

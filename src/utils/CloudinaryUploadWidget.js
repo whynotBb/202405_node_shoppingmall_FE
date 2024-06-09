@@ -51,9 +51,9 @@ function CloudinaryUploadWidget({ uwConfig, setFormData }) {
 
     return (
         <CloudinaryScriptContext.Provider value={{ loaded }}>
-            <button id="upload_widget" className="cloudinary-button">
+            <a id="upload_widget" className="cloudinary-button">
                 Upload
-            </button>
+            </a>
         </CloudinaryScriptContext.Provider>
     );
 }

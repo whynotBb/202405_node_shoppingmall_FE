@@ -6,6 +6,7 @@ import { userActions } from "./action/userAction";
 import "./style/common.style.css";
 import AppLayout from "./Layout/AppLayout";
 import AppRouter from "./routes/AppRouter";
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
     return (

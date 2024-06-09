@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import {
@@ -7,8 +7,7 @@ import {
     faSearch,
     faShoppingBag,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../action/userAction";
 
@@ -31,17 +30,27 @@ const Navbar = ({ user }) => {
     let navigate = useNavigate();
     const onCheckEnter = (event) => {
         if (event.key === "Enter") {
+            console.log("nav search", event.target.value);
             if (event.target.value === "") {
                 return navigate("/");
             }
-            navigate(`?name=${event.target.value}`);
+            navigate(`/?page=1&name=${event.target.value}`);
         }
     };
+
+    // const onCheckEnter = (event) => {
+    //     if (event.key === "Enter") {
+    //         if (event.target.value === "") {
+    //             return navigate("/");
+    //         }
+    //         navigate(`?name=${event.target.value}`);
+    //     }
+    // };
+
     const logout = () => {
         dispatch(userActions.logout());
     };
 
-    console.log("nav bar user - ", user);
     return (
         <div>
             {showSearchBox && (
@@ -54,7 +63,7 @@ const Navbar = ({ user }) => {
                             />
                             <input
                                 type="text"
-                                placeholder="제품검색"
+                                placeholder="제품검색123"
                                 onKeyPress={onCheckEnter}
                             />
                         </div>
