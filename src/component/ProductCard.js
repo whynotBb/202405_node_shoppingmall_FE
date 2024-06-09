@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ item }) => {
     const navigate = useNavigate();
-    console.log(item);
+    //console.log(item);
     const showProduct = (id) => {
         // 상품 디테일 페이지로 가기
         navigate(`/product/${id}`);

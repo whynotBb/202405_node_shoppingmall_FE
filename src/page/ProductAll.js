@@ -6,44 +6,67 @@ import { useDispatch, useSelector } from "react-redux";
 import { productActions } from "../action/productAction";
 import { commonUiActions } from "../action/commonUiAction";
 import ReactPaginate from "react-paginate";
+import { ColorRing } from "react-loader-spinner";
 
 const ProductAll = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const error = useSelector((state) => state.product.error);
+    // const error = useSelector((state) => state.product.error);
+    // const [query, setQuery] = useSearchParams();
+    // console.log("qqq", query.get("name"));
+    // const { productList, totalPageNum } = useSelector((state) => state.product);
+    // const [searchQuery, setSearchQuery] = useState({
+    //     page: query.get("page") || 1,
+    //     name: query.get("name") || "",
+    // }); //검색 조건들을 저장하는 객체
+    // // 처음 로딩하면 상품리스트 불러오기
+    // // console.log(productList);
+    // useEffect(() => {
+    //     dispatch(productActions.getProductList());
+    // }, []);
+
+    // useEffect(() => {
+    //     console.log(location.search);
+
+    //     const params = new URLSearchParams(searchQuery);
+
+    //     const query = params.toString();
+    //     console.log("product all query", query);
+    //     navigate("?" + query);
+    // }, [searchQuery]);
+
+    // useEffect(() => {
+    //     dispatch(productActions.getProductList({ ...searchQuery }));
+    // }, [query]);
+
+    // const handlePageClick = ({ selected }) => {
+    //     //  쿼리에 페이지값 바꿔주기
+    //     //console.log(selected);
+    //     setSearchQuery({ ...searchQuery, page: selected + 1 });
+    // };
     const [query, setQuery] = useSearchParams();
-    console.log("qqq", query.get("name"));
-    const { productList, totalPageNum } = useSelector((state) => state.product);
-    const [searchQuery, setSearchQuery] = useState({
-        page: query.get("page") || 1,
-        name: query.get("name") || "",
-    }); //검색 조건들을 저장하는 객체
+    const name = query.get("name");
     // 처음 로딩하면 상품리스트 불러오기
-    // console.log(productList);
+    const { loading, productList, getProductList } = useSelector(
+        (state) => state.product
+    );
     useEffect(() => {
         dispatch(productActions.getProductList());
-    }, []);
-
-    useEffect(() => {
-        console.log(location.search);
-
-        const params = new URLSearchParams(searchQuery);
-
-        const query = params.toString();
-        console.log("product all query", query);
-        navigate("?" + query);
-    }, [searchQuery]);
-
-    useEffect(() => {
-        dispatch(productActions.getProductList({ ...searchQuery }));
-    }, [query]);
-
-    const handlePageClick = ({ selected }) => {
-        //  쿼리에 페이지값 바꿔주기
-        //console.log(selected);
-        setSearchQuery({ ...searchQuery, page: selected + 1 });
-    };
+    }, [query, name]);
+    if (!productList) {
+        return (
+            <ColorRing
+                visible={true}
+                height="80"
+                width="80"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+            />
+        );
+    }
     return (
         <Container>
             <Row className="my-3">
@@ -53,7 +76,7 @@ const ProductAll = () => {
                     </Col>
                 ))}
             </Row>
-            <ReactPaginate
+            {/* <ReactPaginate
                 nextLabel="next >"
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={5}
@@ -73,7 +96,7 @@ const ProductAll = () => {
                 containerClassName="pagination"
                 activeClassName="active"
                 className="display-center list-style-none paginationWrap"
-            />
+            /> */}
         </Container>
     );
 };
