@@ -35,7 +35,7 @@ const Navbar = ({ user }) => {
             if (event.target.value === "") {
                 return navigate("/");
             }
-            navigate(`?name=${event.target.value}`);
+            navigate(`/?name=${event.target.value}`);
         }
     };
 

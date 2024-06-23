@@ -11,7 +11,7 @@ import { ColorRing } from "react-loader-spinner";
 const CartPage = () => {
     const dispatch = useDispatch();
     const loading = useSelector((state) => state.cart);
-    const { cartList } = useSelector((state) => state.cart);
+    const { cartList, totalPrice } = useSelector((state) => state.cart);
     console.log("cart page : ", cartList);
     useEffect(() => {
         //카트리스트 불러오기
@@ -45,7 +45,7 @@ const CartPage = () => {
                     )}
                 </Col>
                 <Col xs={12} md={5}>
-                    <OrderReceipt cartList={cartList} />
+                    <OrderReceipt cartList={cartList} totalPrice={totalPrice} />
                 </Col>
             </Row>
         </Container>

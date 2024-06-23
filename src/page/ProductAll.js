@@ -1,72 +1,46 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../component/ProductCard";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Navbar } from "react-bootstrap";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { productActions } from "../action/productAction";
 import { commonUiActions } from "../action/commonUiAction";
 import ReactPaginate from "react-paginate";
-import { ColorRing } from "react-loader-spinner";
 
 const ProductAll = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    // const error = useSelector((state) => state.product.error);
-    // const [query, setQuery] = useSearchParams();
-    // console.log("qqq", query.get("name"));
-    // const { productList, totalPageNum } = useSelector((state) => state.product);
-    // const [searchQuery, setSearchQuery] = useState({
-    //     page: query.get("page") || 1,
-    //     name: query.get("name") || "",
-    // }); //검색 조건들을 저장하는 객체
-    // // 처음 로딩하면 상품리스트 불러오기
-    // // console.log(productList);
-    // useEffect(() => {
-    //     dispatch(productActions.getProductList());
-    // }, []);
-
-    // useEffect(() => {
-    //     console.log(location.search);
-
-    //     const params = new URLSearchParams(searchQuery);
-
-    //     const query = params.toString();
-    //     console.log("product all query", query);
-    //     navigate("?" + query);
-    // }, [searchQuery]);
-
-    // useEffect(() => {
-    //     dispatch(productActions.getProductList({ ...searchQuery }));
-    // }, [query]);
+    const error = useSelector((state) => state.product.error);
+    const [query, setQuery] = useSearchParams();
+    console.log("qqq", query.get("name"));
+    const { productList } = useSelector((state) => state.product);
+    const [searchQuery, setSearchQuery] = useState({
+        name: query.get("name") || "",
+    }); //검색 조건들을 저장하는 객체
+    // 처음 로딩하면 상품리스트 불러오기
+    // console.log(productList);
+    useEffect(() => {
+        dispatch(productActions.getProductList());
+    }, []);
+    useEffect(() => {
+        //검색어나 페이지가 바뀌면 url바꿔주기 (검색어또는 페이지가 바뀜 => url 바꿔줌=> url쿼리 읽어옴=> 이 쿼리값 맞춰서  상품리스트 가져오기)
+        if (searchQuery.name === "") {
+            delete searchQuery.name;
+        }
+        console.log(searchQuery);
+        // 객체를 쿼리 형태로 만들고 URLSearchParams > 스트링으로 바꿔 사용한다.
+        const params = new URLSearchParams(searchQuery);
+        const query = params.toString();
+        console.log("product all query", query);
+        navigate("?" + query);
+    }, [location.search]);
 
     // const handlePageClick = ({ selected }) => {
     //     //  쿼리에 페이지값 바꿔주기
     //     //console.log(selected);
     //     setSearchQuery({ ...searchQuery, page: selected + 1 });
     // };
-    const [query, setQuery] = useSearchParams();
-    const name = query.get("name");
-    // 처음 로딩하면 상품리스트 불러오기
-    const { loading, productList, getProductList } = useSelector(
-        (state) => state.product
-    );
-    useEffect(() => {
-        dispatch(productActions.getProductList());
-    }, [query, name]);
-    if (!productList) {
-        return (
-            <ColorRing
-                visible={true}
-                height="80"
-                width="80"
-                ariaLabel="blocks-loading"
-                wrapperStyle={{}}
-                wrapperClass="blocks-wrapper"
-                colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
-            />
-        );
-    }
     return (
         <Container>
             <Row className="my-3">

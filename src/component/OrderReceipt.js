@@ -4,11 +4,10 @@ import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { currencyFormat } from "../utils/number";
 
-const OrderReceipt = ({ cartList }) => {
+const OrderReceipt = ({ cartList, totalPrice }) => {
     const location = useLocation();
     const navigate = useNavigate();
-    let totalPrice = 0;
-    cartList.map((item) => (totalPrice += item.productId.price));
+
     return (
         <div className="receipt-container">
             <h3 className="receipt-title">주문 내역</h3>

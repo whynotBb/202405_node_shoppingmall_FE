@@ -42,7 +42,7 @@ const AdminProduct = () => {
         if (searchQuery.name === "") {
             delete searchQuery.name;
         }
-        console.log(searchQuery);
+        //console.log(searchQuery);
         // 객체를 쿼리 형태로 만들고 URLSearchParams > 스트링으로 바꿔 사용한다.
         const params = new URLSearchParams(searchQuery);
         const query = params.toString();
@@ -56,7 +56,7 @@ const AdminProduct = () => {
         dispatch(productActions.getProductList({ ...searchQuery }));
     }, [query]);
     const deleteItem = (id) => {
-        //아이템 삭제하가
+        //아이템 삭제하가TODO 삭제 전에
         dispatch(productActions.deleteProduct(id));
         // dispatch(productActions.getProductList());
     };
