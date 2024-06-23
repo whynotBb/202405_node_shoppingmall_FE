@@ -8,13 +8,18 @@ import { currencyFormat } from "../utils/number";
 import { productActions } from "../action/productAction";
 
 const CartProductCard = ({ item }) => {
+    // console.log("cart item", item);
     const dispatch = useDispatch();
-    const handleQtyChange = () => {
+    const handleQtyChange = (id, value) => {
         //아이템 수량을 수정한다
+        console.log(value);
+        dispatch(cartActions.updateQty(id, value));
     };
 
     const deleteCart = (id) => {
         //아이템을 지운다
+        console.log("id", id);
+        dispatch(cartActions.deleteCartItem(id));
     };
 
     return (
@@ -34,7 +39,7 @@ const CartProductCard = ({ item }) => {
                             <FontAwesomeIcon
                                 icon={faTrash}
                                 width={24}
-                                onClick={() => deleteCart("hard_code")}
+                                onClick={() => deleteCart(item._id)}
                             />
                         </button>
                     </div>
@@ -49,9 +54,11 @@ const CartProductCard = ({ item }) => {
                     <div>
                         Quantity:
                         <Form.Select
-                            onChange={(event) => handleQtyChange()}
+                            onChange={(event) =>
+                                handleQtyChange(item._id, event.target.value)
+                            }
                             required
-                            defaultValue={1}
+                            defaultValue={item.qty}
                             className="qty-dropdown"
                         >
                             <option value={1}>1</option>

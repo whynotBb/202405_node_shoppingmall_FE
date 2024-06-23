@@ -48,9 +48,12 @@ const getCartList = () => async (dispatch) => {
 const deleteCartItem = (id) => async (dispatch) => {
     try {
         dispatch({ type: types.DELETE_CART_ITEM_REQUEST });
-        const response = await api.delete(`/${id}`);
+        const response = await api.delete(`/cart/${id}`);
         if (response.status !== 200) throw new Error(response.error);
-        dispatch({ type: types.DELETE_CART_ITEM_SUCCESS });
+        dispatch({
+            type: types.DELETE_CART_ITEM_SUCCESS,
+            payload: response.data.cartItmeQty,
+        });
         dispatch(
             commonUiActions.showToastMessage(
                 "상품이 삭제 되었습니다.",
@@ -59,13 +62,46 @@ const deleteCartItem = (id) => async (dispatch) => {
         );
         dispatch(getCartList());
     } catch (error) {
-        dispatch({ type: types.DE, payload: error.error });
+        dispatch({ type: types.DELETE_CART_ITEM_FAIL, payload: error.error });
         dispatch(commonUiActions.showToastMessage(error.error, "error"));
     }
 };
 
-const updateQty = (id, value) => async (dispatch) => {};
-const getCartQty = () => async (dispatch) => {};
+const updateQty = (id, value) => async (dispatch) => {
+    try {
+        dispatch({ type: types.UPDATE_CART_ITEM_REQUEST });
+        const response = await api.put(`/cart/${id}`, {
+            qty: value,
+        });
+        if (response.status !== 200) throw new Error(response.error);
+        dispatch({
+            type: types.UPDATE_CART_ITEM_SUCCESS,
+        });
+        dispatch(
+            commonUiActions.showToastMessage(
+                "수량이 변경되었습니다.",
+                "success"
+            )
+        );
+        dispatch(getCartList());
+    } catch (error) {
+        dispatch({ type: types.UPDATE_CART_ITEM_FAIL, payload: error.error });
+        dispatch(commonUiActions.showToastMessage(error.error, "error"));
+    }
+};
+const getCartQty = () => async (dispatch) => {
+    try {
+        dispatch({ type: types.GET_CART_QTY_REQUEST });
+        const response = await api.get("/cart/qty");
+        if (response.status !== 200) throw new Error(response.error);
+        dispatch({
+            type: types.GET_CART_QTY_SUCCESS,
+            payload: response.data.cartItmeQty,
+        });
+    } catch (error) {
+        dispatch({ type: types.GET_CART_QTY_FAIL, payload: error.error });
+    }
+};
 export const cartActions = {
     addToCart,
     getCartList,
