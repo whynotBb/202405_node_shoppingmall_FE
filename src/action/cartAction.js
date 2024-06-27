@@ -11,11 +11,11 @@ const addToCart =
                 size,
                 qty: 1,
             });
-            console.log("carttttttt", response.data.cartItmeQty);
+            console.log("carttttttt", response.data.cartItemQty);
             if (response.status !== 200) throw new Error(response.error);
             dispatch({
                 type: types.ADD_TO_CART_SUCCESS,
-                payload: response.data.cartItmeQty,
+                payload: response.data.cartItemQty,
             });
             dispatch(
                 commonUiActions.showToastMessage(
@@ -52,7 +52,7 @@ const deleteCartItem = (id) => async (dispatch) => {
         if (response.status !== 200) throw new Error(response.error);
         dispatch({
             type: types.DELETE_CART_ITEM_SUCCESS,
-            payload: response.data.cartItmeQty,
+            payload: response.data.cartItemQty,
         });
         dispatch(
             commonUiActions.showToastMessage(
@@ -96,7 +96,7 @@ const getCartQty = () => async (dispatch) => {
         if (response.status !== 200) throw new Error(response.error);
         dispatch({
             type: types.GET_CART_QTY_SUCCESS,
-            payload: response.data.cartItmeQty,
+            payload: response.data.cartItemQty,
         });
     } catch (error) {
         dispatch({ type: types.GET_CART_QTY_FAIL, payload: error.error });
