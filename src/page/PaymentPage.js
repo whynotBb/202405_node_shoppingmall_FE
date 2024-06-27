@@ -52,7 +52,7 @@ const PaymentPage = () => {
             }),
         };
         //오더 생성하가ㅣ
-        dispatch(orderActions.createOrder(data));
+        dispatch(orderActions.createOrder(data, navigate));
     };
 
     const handleFormChange = (event) => {
