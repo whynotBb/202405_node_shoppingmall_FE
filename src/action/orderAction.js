@@ -23,14 +23,38 @@ const createOrder = (payload, navigate) => async (dispatch) => {
     }
 };
 
-const getOrder = () => async (dispatch) => {};
-const getOrderList = (query) => async (dispatch) => {};
+// admin 에서 orders 모두 가져오기,   query -> page, orderNum 검색
+const getOrders = (query) => async (dispatch) => {
+    try {
+        dispatch({ type: types.GET_ORDER_REQUEST });
+        const response = await api.get("/order/all", {
+            params: { ...query },
+        });
+        if (response.status !== 200) throw new Error(response.error);
+        dispatch({ type: types.GET_ORDER_SUCCESS, payload: response.data });
+    } catch (error) {
+        dispatch({ type: types.GET_ORDER_FAIL, payload: error.error });
+    }
+};
+const getOrderList = () => async (dispatch) => {
+    try {
+        dispatch({ type: types.GET_ORDER_LIST_REQUEST });
+        const response = await api.get("/order");
+        if (response.status !== 200) throw new Error(response.error);
+        dispatch({
+            type: types.GET_ORDER_LIST_SUCCESS,
+            payload: response.data.data,
+        });
+    } catch (error) {
+        dispatch({ type: types.GET_ORDER_LIST_FAIL, payload: error.error });
+    }
+};
 
 const updateOrder = (id, status) => async (dispatch) => {};
 
 export const orderActions = {
     createOrder,
-    getOrder,
+    getOrders,
     getOrderList,
     updateOrder,
 };
