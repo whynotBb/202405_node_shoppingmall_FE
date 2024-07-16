@@ -8,49 +8,22 @@ import { commonUiActions } from "../action/commonUiAction";
 import ReactPaginate from "react-paginate";
 
 const ProductAll = () => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const error = useSelector((state) => state.product.error);
-    const [query, setQuery] = useSearchParams();
-    console.log("qqq", query.get("name"));
-    const { productList } = useSelector((state) => state.product);
-    const [searchQuery, setSearchQuery] = useState({
-        name: query.get("name") || "",
-    }); //검색 조건들을 저장하는 객체
-    // 처음 로딩하면 상품리스트 불러오기
-    // console.log(productList);
-    useEffect(() => {
-        dispatch(productActions.getProductList());
-    }, []);
-    useEffect(() => {
-        //검색어나 페이지가 바뀌면 url바꿔주기 (검색어또는 페이지가 바뀜 => url 바꿔줌=> url쿼리 읽어옴=> 이 쿼리값 맞춰서  상품리스트 가져오기)
-        if (searchQuery.name === "") {
-            delete searchQuery.name;
-        }
-        console.log(searchQuery);
-        // 객체를 쿼리 형태로 만들고 URLSearchParams > 스트링으로 바꿔 사용한다.
-        const params = new URLSearchParams(searchQuery);
-        const query = params.toString();
-        console.log("product all query", query);
-        navigate("?" + query);
-    }, [location.search]);
+	const dispatch = useDispatch();
+	const { productList } = useSelector((state) => state.product);
 
-    // const handlePageClick = ({ selected }) => {
-    //     //  쿼리에 페이지값 바꿔주기
-    //     //console.log(selected);
-    //     setSearchQuery({ ...searchQuery, page: selected + 1 });
-    // };
-    return (
-        <Container>
-            <Row className="my-3">
-                {productList.map((item, index) => (
-                    <Col md={3} sm={12} key={index}>
-                        <ProductCard item={item} key={index} />
-                    </Col>
-                ))}
-            </Row>
-            {/* <ReactPaginate
+	useEffect(() => {
+		dispatch(productActions.getProductList());
+	}, []);
+	return (
+		<Container>
+			<Row className="my-3">
+				{productList.map((item, index) => (
+					<Col md={3} sm={12} key={index}>
+						<ProductCard item={item} key={index} />
+					</Col>
+				))}
+			</Row>
+			{/* <ReactPaginate
                 nextLabel="next >"
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={5}
@@ -71,8 +44,8 @@ const ProductAll = () => {
                 activeClassName="active"
                 className="display-center list-style-none paginationWrap"
             /> */}
-        </Container>
-    );
+		</Container>
+	);
 };
 
 export default ProductAll;
