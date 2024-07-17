@@ -47,7 +47,7 @@ const OrderDetailDialog = ({ open, handleClose }) => {
 						<thead>
 							<tr>
 								<th>ID</th>
-								<th>Name</th>
+								<th>Name (size)</th>
 								<th>Unit Price</th>
 								<th>Qty</th>
 								<th>Price</th>
@@ -58,7 +58,9 @@ const OrderDetailDialog = ({ open, handleClose }) => {
 								selectedOrder.items.map((item) => (
 									<tr key={item._id}>
 										<td>{item._id}</td>
-										<td>{item.productId.name}</td>
+										<td>
+											{item.productId.name} ({item.size})
+										</td>
 										<td>{currencyFormat(item.price)}</td>
 										<td>{item.qty}</td>
 										<td>{currencyFormat(item.price * item.qty)}</td>
