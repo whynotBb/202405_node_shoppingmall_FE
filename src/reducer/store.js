@@ -4,14 +4,25 @@ import productReducer from "./productReducer";
 import cartReducer from "./cartReducer";
 import commonUiReducer from "./commonUIReducer";
 import orderReducer from "./orderReducer";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+// persist configuration for user reducer
+const userPersistConfig = {
+	key: "user",
+	storage,
+};
+
+const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
 
 const store = configureStore({
-  reducer: {
-    user: userReducer,
-    product: productReducer,
-    cart: cartReducer,
-    ui: commonUiReducer,
-    order: orderReducer,
-  },
+	reducer: {
+		user: persistedUserReducer, // apply persistReducer to userReducer
+		product: productReducer,
+		cart: cartReducer,
+		ui: commonUiReducer,
+		order: orderReducer,
+	},
 });
+
 export default store;

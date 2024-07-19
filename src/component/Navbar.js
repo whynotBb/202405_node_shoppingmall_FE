@@ -13,7 +13,7 @@ const Navbar = ({ user }) => {
 	console.log("cartItemCount", cartItemQty);
 	const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
 	const [showSearchBox, setShowSearchBox] = useState(false);
-	const menuList = ["여성", "Divided", "남성", "신생아/유아", "아동", "H&M HOME", "Sale", "지속가능성"];
+	const menuList = ["All", "Top", "Dress", "Pants"];
 	const [width, setWidth] = useState(0);
 	const navigate = useNavigate();
 
