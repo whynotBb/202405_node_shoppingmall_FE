@@ -29,7 +29,32 @@ const OrderReceipt = ({ cartList, totalPrice }) => {
             </ul>
             <div className="display-flex space-between receipt-title">
                 <div>
-                    <strong>Total:</strong>
+                    <strong>Total</strong>
+                </div>
+                <div>
+                    <strong>₩ {totalPrice.toLocaleString(3)}</strong>
+                </div>
+            </div>
+            <div className="point_box">
+                <div className="display-flex space-between ">
+                    <div>
+                        <strong>보유포인트</strong>
+                    </div>
+                    <div>
+                        <strong>1,000</strong>
+                    </div>
+                </div>
+                <div className="display-flex space-between ">
+                    <div></div>
+                    <div>
+                        <input type="number" />
+                        <span className="btn_point">전액사용</span>
+                    </div>
+                </div>
+            </div>
+            <div className="display-flex space-between receipt-title">
+                <div>
+                    <strong>결제금액</strong>
                 </div>
                 <div>
                     <strong>₩ {totalPrice.toLocaleString(3)}</strong>
