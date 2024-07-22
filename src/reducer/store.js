@@ -6,6 +6,7 @@ import commonUiReducer from "./commonUIReducer";
 import orderReducer from "./orderReducer";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import pointReducer from "./pointReducer";
 
 // persist configuration for user reducer
 const userPersistConfig = {
@@ -22,6 +23,7 @@ const store = configureStore({
 		cart: cartReducer,
 		ui: commonUiReducer,
 		order: orderReducer,
+		point: pointReducer,
 	},
 });
 
