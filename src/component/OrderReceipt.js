@@ -1,13 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { currencyFormat } from "../utils/number";
+import { useDispatch, useSelector } from "react-redux";
+import { pointActions } from "../action/pointAction";
 
 const OrderReceipt = ({ cartList, totalPrice }) => {
     const location = useLocation();
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
+    const [paymentAmount, setPaymentAmount] = useState(totalPrice);
+    const { totalPoint } = useSelector((state) => state.point);
+    const [inputValue, setInputValue] = useState("");
+    useEffect(() => {
+        dispatch(pointActions.getTotalPoints());
+    }, []);
+    const usePoint = (e) => {
+        const value = e.target.value;
+        console.log("usePoint", value);
+        if (value > totalPoint) {
+            setInputValue(totalPoint);
+            setPaymentAmount(totalPrice - totalPoint);
+        } else {
+            setInputValue(value);
+            setPaymentAmount(totalPrice - value);
+        }
+    };
+    const useAllPoint = () => {
+        setInputValue(totalPoint);
+        setPaymentAmount(totalPrice - totalPoint);
+    };
     return (
         <div className="receipt-container">
             <h3 className="receipt-title">주문 내역</h3>
@@ -41,14 +64,20 @@ const OrderReceipt = ({ cartList, totalPrice }) => {
                         <strong>보유포인트</strong>
                     </div>
                     <div>
-                        <strong>1,000</strong>
+                        <strong>{totalPoint?.toLocaleString(3)}</strong>
                     </div>
                 </div>
                 <div className="display-flex space-between ">
                     <div></div>
                     <div>
-                        <input type="number" />
-                        <span className="btn_point">전액사용</span>
+                        <input
+                            type="number"
+                            value={inputValue}
+                            onChange={usePoint}
+                        />
+                        <span className="btn_point" onClick={useAllPoint}>
+                            전액사용
+                        </span>
                     </div>
                 </div>
             </div>
@@ -57,7 +86,7 @@ const OrderReceipt = ({ cartList, totalPrice }) => {
                     <strong>결제금액</strong>
                 </div>
                 <div>
-                    <strong>₩ {totalPrice.toLocaleString(3)}</strong>
+                    <strong>₩ {paymentAmount.toLocaleString(3)}</strong>
                 </div>
             </div>
             {cartList.length > 0 && location.pathname.includes("/cart") && (
