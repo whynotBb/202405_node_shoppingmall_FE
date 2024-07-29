@@ -7,7 +7,7 @@ import { pointActions } from "../action/pointAction";
 
 const Event = () => {
     const dispatch = useDispatch();
-    const { totalPoint } = useSelector((state) => state.point);
+    const { totalPoint, addPointList } = useSelector((state) => state.point);
     //룰렛 데이터
     const data = [
         {
@@ -18,12 +18,13 @@ const Event = () => {
             option: "100점",
             percentage: 25,
         },
+
         {
-            option: "1000점",
+            option: "200점",
             percentage: 25,
         },
         {
-            option: "200점",
+            option: "1000점",
             percentage: 25,
         },
     ];
@@ -36,29 +37,11 @@ const Event = () => {
     const handleSpinClick = () => {
         setResultMsg("");
         if (!mustSpin) {
-            // 가중치 랜덤 알고리즘(Weighted Random Picker) 적용
-            // 1. 랜덤 기준점 설정
-            const pivot = Math.floor(Math.random() * 99 + 1);
-            let stack = 0; // 가중치
+            // 단순 랜덤 선택
+            const newPrizeNumber = Math.floor(Math.random() * data.length);
 
-            let percentage = data.map((row, idx) => {
-                {
-                    return row.percentage;
-                }
-            });
+            console.log("newPrizeNumber", newPrizeNumber);
 
-            let newPrizeNumber = null; //당첨 인덱스
-
-            percentage.some((row, idx) => {
-                //2. 가중치 누적
-                stack += row;
-
-                // 3. 누적 가중치 값이 기준점 이상이면 종료
-                if (pivot <= stack) {
-                    newPrizeNumber = idx;
-                    return true;
-                }
-            });
             // 당첨 인덱스를 가리킴
             setPrizeNumber(newPrizeNumber);
             setMustSpin(true);
@@ -68,6 +51,7 @@ const Event = () => {
     // 룰렛 애니메이션이 멈출 때 실행되는 함수
     const StopSpinning = () => {
         setMustSpin(false);
+        console.log("prizeNumber", prizeNumber);
         setResultMsg(`🎉 ${data[prizeNumber].option} 이 당첨되셨습니다! 🎉`);
         const pointData = data[prizeNumber].option;
         const pointsString = pointData.replace("점", "");
@@ -77,7 +61,12 @@ const Event = () => {
     useEffect(() => {
         console.log("point page");
         dispatch(pointActions.getTotalPoints());
-        console.log(totalPoint);
+        console.log("event page !! ", totalPoint, addPointList);
+        const dateList = addPointList
+            .slice()
+            .reverse()
+            .map((item) => item.date.slice(0, 10));
+        console.log("dateList", dateList[0]);
     }, [prizeNumber]);
     return (
         <Container className="roulette_wrap">
@@ -87,9 +76,10 @@ const Event = () => {
                 <Wheel
                     spinDuration={0.2} // spin속도
                     //디폴트 위치 랜덤으로
-                    startingOptionIndex={Math.floor(
-                        Math.random() * data.length
-                    )}
+                    // startingOptionIndex={Math.floor(
+                    //     Math.random() * data.length
+                    // )}
+                    startingOptionIndex={prizeNumber}
                     mustStartSpinning={mustSpin}
                     prizeNumber={prizeNumber}
                     data={data}
@@ -118,7 +108,7 @@ const Event = () => {
             <div className="roulette_result">{resultMsg}</div>
             <div className="roulett_info">
                 <h3>
-                    누적 포인트 : <u>{totalPoint.toLocaleString(3)}점</u>
+                    누적 포인트 : <u>{totalPoint?.toLocaleString(3)}점</u>
                 </h3>
                 <p>하루 한번 이벤트에 도전하세요!</p>
             </div>

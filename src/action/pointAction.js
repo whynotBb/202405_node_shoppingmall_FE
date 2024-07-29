@@ -27,7 +27,21 @@ const getTotalPoints = () => async (dispatch) => {
     }
 };
 
+const deductPoint = (payload) => async (dispatch) => {
+    try {
+        dispatch({ type: types.DEDUCT_POINT_REQUEST });
+        const response = await api.put("/point", payload);
+        if (response.status !== 200) throw new Error(response.error);
+        console.log("userPoint--", response);
+        dispatch({ type: types.DEDUCT_POINT_SUCCESS, payload: response.data });
+        console.log(response.data);
+    } catch (error) {
+        dispatch({ type: types.DEDUCT_POINT_FAIL, payload: error.error });
+    }
+};
+
 export const pointActions = {
     addPoint,
     getTotalPoints,
+    deductPoint,
 };

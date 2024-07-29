@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { commonUiActions } from "../action/commonUiAction";
 import { cc_expires_format } from "../utils/number";
+import { pointActions } from "../action/pointAction";
 
 const PaymentPage = () => {
     const dispatch = useDispatch();
@@ -32,13 +33,21 @@ const PaymentPage = () => {
     });
 
     const { cartList, totalPrice } = useSelector((state) => state.cart);
+    const { paymentAmount, usePoint } = useSelector((state) => state.order);
+    console.log("!!!!!!!!!", paymentAmount, usePoint);
     //맨처음 페이지 로딩할때는 넘어가고  오더번호를 받으면 성공페이지로 넘어가기
     // console.log("shipInfo", shipInfo);
+    let amount = totalPrice;
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (usePoint > 0) {
+            amount = paymentAmount;
+        }
         const { firstName, lastName, contact, address, city, zip } = shipInfo;
         const data = {
             totalPrice,
+            paymentAmount: amount,
+            usePoint,
             shipTo: { address, city, zip },
             contact: { firstName, lastName, contact },
             items: cartList.map((item) => {
@@ -51,8 +60,10 @@ const PaymentPage = () => {
                 };
             }),
         };
+        console.log("!!handleSubmit!!", data);
         //오더 생성하가ㅣ
         dispatch(orderActions.createOrder(data, navigate));
+        dispatch(pointActions.deductPoint({ points: usePoint }));
     };
 
     const handleFormChange = (event) => {

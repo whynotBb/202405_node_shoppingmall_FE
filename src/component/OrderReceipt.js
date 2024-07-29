@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { currencyFormat } from "../utils/number";
+import * as types from "../constants/order.constants";
 import { useDispatch, useSelector } from "react-redux";
 import { pointActions } from "../action/pointAction";
 
@@ -31,6 +32,13 @@ const OrderReceipt = ({ cartList, totalPrice }) => {
         setInputValue(totalPoint);
         setPaymentAmount(totalPrice - totalPoint);
     };
+    useEffect(() => {
+        dispatch({
+            type: types.SET_PAYMENT_AMOUNT,
+            payload: Number(paymentAmount),
+        });
+        dispatch({ type: types.SET_USE_POINT, payload: Number(inputValue) });
+    }, [inputValue]);
     return (
         <div className="receipt-container">
             <h3 className="receipt-title">주문 내역</h3>
@@ -58,37 +66,45 @@ const OrderReceipt = ({ cartList, totalPrice }) => {
                     <strong>₩ {totalPrice.toLocaleString(3)}</strong>
                 </div>
             </div>
-            <div className="point_box">
-                <div className="display-flex space-between ">
-                    <div>
-                        <strong>보유포인트</strong>
+            {location.pathname.includes("/payment") && (
+                <>
+                    <div className="point_box">
+                        <div className="display-flex space-between ">
+                            <div>
+                                <strong>보유포인트</strong>
+                            </div>
+                            <div>
+                                <strong>{totalPoint?.toLocaleString(3)}</strong>
+                            </div>
+                        </div>
+                        <div className="display-flex space-between ">
+                            <div></div>
+                            <div>
+                                <input
+                                    type="number"
+                                    value={inputValue}
+                                    onChange={usePoint}
+                                />
+                                <span
+                                    className="btn_point"
+                                    onClick={useAllPoint}
+                                >
+                                    전액사용
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <strong>{totalPoint?.toLocaleString(3)}</strong>
+
+                    <div className="display-flex space-between receipt-title">
+                        <div>
+                            <strong>결제금액</strong>
+                        </div>
+                        <div>
+                            <strong>₩ {paymentAmount.toLocaleString(3)}</strong>
+                        </div>
                     </div>
-                </div>
-                <div className="display-flex space-between ">
-                    <div></div>
-                    <div>
-                        <input
-                            type="number"
-                            value={inputValue}
-                            onChange={usePoint}
-                        />
-                        <span className="btn_point" onClick={useAllPoint}>
-                            전액사용
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div className="display-flex space-between receipt-title">
-                <div>
-                    <strong>결제금액</strong>
-                </div>
-                <div>
-                    <strong>₩ {paymentAmount.toLocaleString(3)}</strong>
-                </div>
-            </div>
+                </>
+            )}
             {cartList.length > 0 && location.pathname.includes("/cart") && (
                 <Button
                     variant="dark"

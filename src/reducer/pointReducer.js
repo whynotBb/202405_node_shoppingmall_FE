@@ -5,6 +5,7 @@ const initialState = {
     error: "",
     totalPoint: null,
     pointHistory: "",
+    addPointList: null,
 };
 function pointReducer(state = initialState, action) {
     const { type, payload } = action;
@@ -23,6 +24,7 @@ function pointReducer(state = initialState, action) {
                 ...state,
                 loading: true,
                 totalPoint: payload.data.totalPoint,
+                addPointList: payload.data.addPoints,
             };
         case types.ADD_POINT__FAIL:
         case types.GET_POINT_FAIL:
