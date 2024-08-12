@@ -306,6 +306,7 @@ body {
     max-width: 500px;
     margin: 10px auto;
     text-align: center;
+    position: relative;
 }
 .roulette_box {
     position: relative;
@@ -321,6 +322,21 @@ body {
     border-radius: 50%;
     outline: none;
     border: 3px solid #ccc;
+}
+.roulette_dim {
+    width: 280px;
+    height: 130px;
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 20;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .roulette_box img[alt~="roulette-static"] {
     position: absolute;

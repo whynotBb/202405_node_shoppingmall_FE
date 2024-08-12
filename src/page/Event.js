@@ -4,10 +4,13 @@ import { useState } from "react";
 import { Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { pointActions } from "../action/pointAction";
+import { ColorRing } from "react-loader-spinner";
 
 const Event = () => {
     const dispatch = useDispatch();
-    const { totalPoint, addPointList } = useSelector((state) => state.point);
+    const { totalPoint, addPointList, loading } = useSelector(
+        (state) => state.point
+    );
     //룰렛 데이터
     const data = [
         {
@@ -58,16 +61,42 @@ const Event = () => {
         const points = Number(pointsString);
         dispatch(pointActions.addPoint({ points: points }));
     };
+    function getToday() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = ("0" + (1 + date.getMonth())).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+
+        return `${year}-${month}-${day}`;
+    }
+    const [isChallenge, setIsChallenge] = useState(false);
     useEffect(() => {
         console.log("point page");
         dispatch(pointActions.getTotalPoints());
         console.log("event page !! ", totalPoint, addPointList);
         const dateList = addPointList
-            .slice()
+            ?.slice()
             .reverse()
             .map((item) => item.date.slice(0, 10));
-        console.log("dateList", dateList[0]);
-    }, [prizeNumber]);
+        console.log("dateList", dateList?.[0]);
+        const today = getToday();
+        if (dateList?.[0] === today) {
+            setIsChallenge(true);
+        }
+    }, [totalPoint]);
+
+    if (!loading || !addPointList)
+        return (
+            <ColorRing
+                visible={true}
+                height="80"
+                width="80"
+                ariaLabel="blocks-loading"
+                wrapperStyle={{}}
+                wrapperClass="blocks-wrapper"
+                colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+            />
+        );
     return (
         <Container className="roulette_wrap">
             <h2>100% 당첨 룰렛 이벤트</h2>
@@ -103,6 +132,11 @@ const Event = () => {
                 <button onClick={handleSpinClick} className="btn_spin">
                     Go✨
                 </button>
+                {isChallenge && (
+                    <div className="roulette_dim">
+                        오늘은 이미 이벤트에 참여하셨습니다!
+                    </div>
+                )}
             </div>
 
             <div className="roulette_result">{resultMsg}</div>
