@@ -32,6 +32,7 @@ const loginWithEmail =
 				throw new Error(response.error);
 			}
 			sessionStorage.setItem("token", response.data.token);
+			console.log("이메일로그인했음!!", response.data);
 			dispatch({
 				type: types.LOGIN_SUCCESS,
 				payload: response.data.user,
@@ -53,7 +54,7 @@ const loginWithGoogle = (token) => async (dispatch) => {
 		sessionStorage.setItem("token", response.data.token);
 		console.log("구글로그인했음!!", response.data);
 
-		dispatch({ type: types.GOOGLE_LOGIN_SUCCESS, payload: response.data });
+		dispatch({ type: types.GOOGLE_LOGIN_SUCCESS, payload: response.data.user });
 	} catch (error) {
 		dispatch({ type: types.GOOGLE_LOGIN_FAIL, payload: error.error });
 		dispatch(commonUiActions.showToastMessage(error.error, "error"));
