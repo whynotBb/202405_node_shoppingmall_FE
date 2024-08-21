@@ -103,3 +103,5 @@ Milestone 6. 누나에게 웹사이트 보내고 수료증 받기👨‍🎓
 웹사이트에 특별한 기능에대한 설명(Milestone 1에 대한 내용):
 프론트엔드 깃허브주소:
 백엔드 깃허브 주소:
+
+\*\* 구글 인증 api https://console.cloud.google.com/projectselector2/apis/dashboard?supportedpurview=project&pli=1

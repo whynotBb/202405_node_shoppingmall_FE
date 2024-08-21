@@ -51,6 +51,8 @@ const loginWithGoogle = (token) => async (dispatch) => {
 		const response = await api.post("/auth/google", { token });
 		if (response.status !== 200) throw new Error(response.error);
 		sessionStorage.setItem("token", response.data.token);
+		console.log("구글로그인했음!!", response.data);
+
 		dispatch({ type: types.GOOGLE_LOGIN_SUCCESS, payload: response.data });
 	} catch (error) {
 		dispatch({ type: types.GOOGLE_LOGIN_FAIL, payload: error.error });
