@@ -28,12 +28,22 @@ const MyPage = () => {
 	return (
 		<Container className="status-card-container">
 			여기?
-			{orderList
+			{orderList.length === 0 ? (
+				<Container>
+					<div>주문한 상품이 없습니다</div>
+				</Container>
+			) : (
+				orderList
+					?.slice()
+					.reverse()
+					.map((item, index) => <OrderStatusCard key={index} item={item} />)
+			)}
+			{/* {orderList
 				?.slice()
 				.reverse()
 				.map((item, index) => (
 					<OrderStatusCard key={index} item={item} />
-				))}
+				))} */}
 		</Container>
 	);
 };
