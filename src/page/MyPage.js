@@ -27,7 +27,6 @@ const MyPage = () => {
 
 	return (
 		<Container className="status-card-container">
-			여기?
 			{orderList.length === 0 ? (
 				<Container>
 					<div>주문한 상품이 없습니다</div>
