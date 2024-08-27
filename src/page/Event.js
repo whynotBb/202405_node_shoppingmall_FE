@@ -34,18 +34,37 @@ const Event = () => {
 	const [mustSpin, setMustSpin] = useState(false);
 	const [prizeNumber, setPrizeNumber] = useState(0); //당첨 인덱스
 	const [resultMsg, setResultMsg] = useState("");
+	// 이벤트 가능여부 판단
+	const [isChallenge, setIsChallenge] = useState(false);
 	// 룰렛 애니메이션을 실행시킬 함수
 	const handleSpinClick = () => {
-		setResultMsg("");
-		if (!mustSpin) {
-			// 단순 랜덤 선택
-			const newPrizeNumber = Math.floor(Math.random() * data.length);
+		// dispatch(pointActions.getTotalPoints());
+		// console.log("StopSpinning !! ", totalPoint, addPointList);
+		// const dateList = addPointList
+		// 	?.slice()
+		// 	.reverse()
+		// 	.map((item) => item.date.slice(0, 10));
+		// console.log("1", isChallenge);
+		// const today = getToday();
+		// if (dateList?.[0] === today) {
+		// 	console.log("2", isChallenge);
 
-			console.log("newPrizeNumber", newPrizeNumber);
+		// 	setIsChallenge(true);
+		// }
+		if (!isChallenge) {
+			console.log("3", isChallenge);
+			setResultMsg("");
+			if (!mustSpin) {
+				// 단순 랜덤 선택
+				const newPrizeNumber = Math.floor(Math.random() * data.length);
 
-			// 당첨 인덱스를 가리킴
-			setPrizeNumber(newPrizeNumber);
-			setMustSpin(true);
+				console.log("newPrizeNumber", newPrizeNumber);
+
+				// 당첨 인덱스를 가리킴
+				setPrizeNumber(newPrizeNumber);
+				setMustSpin(true);
+				setIsChallenge(true);
+			}
 		}
 	};
 
@@ -67,7 +86,7 @@ const Event = () => {
 
 		return `${year}-${month}-${day}`;
 	}
-	const [isChallenge, setIsChallenge] = useState(false);
+
 	useEffect(() => {
 		console.log("point page");
 		dispatch(pointActions.getTotalPoints());
