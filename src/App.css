@@ -403,3 +403,9 @@ input[type="number"] {
 	text-align: center;
 	margin-left: 5px;
 }
+.blocks-wrapper {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
