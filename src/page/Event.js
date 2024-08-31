@@ -153,7 +153,9 @@ const Event = () => {
                 </button>
                 {isChallenge && (
                     <div className="roulette_dim">
-                        오늘은 이미 이벤트에 참여하셨습니다!
+                        {resultMsg
+                            ? resultMsg
+                            : "오늘은 이미 이벤트에 참여하셨습니다!"}
                     </div>
                 )}
             </div>
