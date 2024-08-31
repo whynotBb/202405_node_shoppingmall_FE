@@ -12,7 +12,7 @@ const initialState = {
     cartList: null,
     totalPrice: 0,
 };
-console.log("initialState", initialState);
+// console.log("initialState", initialState);
 function cartReducer(state = initialState, action) {
     const { type, payload } = action;
     switch (type) {

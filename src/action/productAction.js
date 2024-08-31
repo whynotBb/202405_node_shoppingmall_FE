@@ -4,19 +4,19 @@ import { toast } from "react-toastify";
 import { commonUiActions } from "./commonUiAction";
 
 const getProductList = (query) => async (dispatch) => {
-    console.log("getProductList ss");
+    // console.log("getProductList ss");
     try {
         dispatch({ type: types.PRODUCT_GET_REQUEST });
         const response = await api.get("/product", {
             params: { ...query },
         });
-        console.log("getProductList rrr", response);
+        // console.log("getProductList rrr", response);
         if (response.status !== 200) throw new Error(response.error);
         dispatch({
             type: types.PRODUCT_GET_SUCCESS,
             payload: response.data,
         });
-        console.log("getProductList", response.data);
+        // console.log("getProductList", response.data);
     } catch (error) {
         dispatch({ type: types.PRODUCT_GET_FAIL, payload: error.error });
         dispatch(commonUiActions.showToastMessage(error.error, "error"));
@@ -26,7 +26,7 @@ const getProductDetail = (id) => async (dispatch) => {
     try {
         dispatch({ type: types.GET_PRODUCT_DETAIL_REQUEST });
         const response = await api.get(`/product/${id}`);
-        console.log("detail", response);
+        // console.log("detail", response);
         if (response.status !== 200) throw new Error(response.error);
         dispatch({
             type: types.GET_PRODUCT_DETAIL_SUCCESS,

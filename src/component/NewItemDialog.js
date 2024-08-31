@@ -68,7 +68,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         //console.log("formData", formData);
         if (mode === "new") {
             //새 상품 만들기
-            console.log("new");
+            // console.log("new");
             dispatch(
                 productActions.createProduct({ ...formData, stock: totalStock })
             );
@@ -76,7 +76,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
             dispatch(productActions.getProductList());
         } else {
             // 상품 수정하기
-            console.log("수정");
+            // console.log("수정");
             dispatch(
                 productActions.editProduct(
                     { ...formData, stock: totalStock },

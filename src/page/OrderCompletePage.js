@@ -7,7 +7,7 @@ import "../style/paymentPage.style.css";
 const OrderCompletePage = () => {
     // 리듀서에서 orderNum 가져오기
     const { orderNum } = useSelector((state) => state.order);
-    console.log(orderNum);
+    // console.log(orderNum);
     //만약 주문번호가 없는상태로 이페이지에 왔다면 다시 메인페이지로 돌아가기
     if (orderNum === "") {
         return (

@@ -11,7 +11,7 @@ const addToCart =
                 size,
                 qty: 1,
             });
-            console.log("carttttttt", response.data.cartItemQty);
+            // console.log("carttttttt", response.data.cartItemQty);
             if (response.status !== 200) throw new Error(response.error);
             dispatch({
                 type: types.ADD_TO_CART_SUCCESS,
@@ -34,7 +34,7 @@ const getCartList = () => async (dispatch) => {
         dispatch({ type: types.GET_CART_LIST_REQUEST });
         const response = await api.get("/cart");
 
-        console.log("getCartListaction", response);
+        // console.log("getCartListaction", response);
         if (response.status !== 200) throw new Error(response.error);
         dispatch({
             type: types.GET_CART_LIST_SUCCESS,

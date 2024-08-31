@@ -4,11 +4,11 @@ import { commonUiActions } from "./commonUiAction";
 
 const addPoint = (payload) => async (dispatch) => {
     try {
-        console.log(payload);
+        // console.log(payload);
         dispatch({ type: types.ADD_POINT_REQUEST });
         const response = await api.post("/point", payload);
         if (response.status !== 200) throw new Error(response.error);
-        console.log(response);
+        // console.log(response);
         dispatch({ type: types.ADD_POINT_SUCCESS, payload: response.data });
     } catch (error) {
         dispatch({ type: types.ADD_POINT__FAIL, payload: error.error });
@@ -20,7 +20,7 @@ const getTotalPoints = () => async (dispatch) => {
         dispatch({ type: types.GET_POINT_REQUEST });
         const response = await api.get("/point");
         if (response.status !== 200) throw new Error(response.error);
-        console.log("getTotalPoints--", response);
+        // console.log("getTotalPoints--", response);
         dispatch({ type: types.GET_POINT_SUCCESS, payload: response.data });
     } catch (error) {
         dispatch({ type: types.GET_POINT_FAIL, payload: error.error });
@@ -32,9 +32,9 @@ const deductPoint = (payload) => async (dispatch) => {
         dispatch({ type: types.DEDUCT_POINT_REQUEST });
         const response = await api.put("/point", payload);
         if (response.status !== 200) throw new Error(response.error);
-        console.log("userPoint--", response);
+        // console.log("userPoint--", response);
         dispatch({ type: types.DEDUCT_POINT_SUCCESS, payload: response.data });
-        console.log(response.data);
+        // console.log(response.data);
     } catch (error) {
         dispatch({ type: types.DEDUCT_POINT_FAIL, payload: error.error });
     }

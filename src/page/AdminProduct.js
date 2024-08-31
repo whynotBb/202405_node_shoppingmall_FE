@@ -46,7 +46,7 @@ const AdminProduct = () => {
         // 객체를 쿼리 형태로 만들고 URLSearchParams > 스트링으로 바꿔 사용한다.
         const params = new URLSearchParams(searchQuery);
         const query = params.toString();
-        console.log("admin query", query);
+        // console.log("admin query", query);
         navigate("?" + query);
     }, [searchQuery]);
 
@@ -78,7 +78,7 @@ const AdminProduct = () => {
 
     const handlePageClick = ({ selected }) => {
         //  쿼리에 페이지값 바꿔주기
-        console.log(selected);
+        // console.log(selected);
         setSearchQuery({ ...searchQuery, page: selected + 1 });
     };
     // searchbox 의 값을 읽어온다. > 엔터 치면, searchQuery 객체가업데이트됨 > searchQuery 객체 안에 아이템 기준으로 url 을 새로 생성하여 호출한다. &name = 스트레이트+팬츠

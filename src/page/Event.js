@@ -55,13 +55,13 @@ const Event = () => {
 
         // 	setIsChallenge(true);
         // }
-        console.log("3", isChallenge);
+        // console.log("3", isChallenge);
         setResultMsg("");
         if (!mustSpin) {
             // 단순 랜덤 선택
             const newPrizeNumber = Math.floor(Math.random() * data.length);
 
-            console.log("newPrizeNumber", newPrizeNumber);
+            // console.log("newPrizeNumber", newPrizeNumber);
 
             // 당첨 인덱스를 가리킴
             setPrizeNumber(newPrizeNumber);
@@ -72,7 +72,7 @@ const Event = () => {
     // 룰렛 애니메이션이 멈출 때 실행되는 함수
     const StopSpinning = () => {
         setMustSpin(false);
-        console.log("prizeNumber", prizeNumber);
+        // console.log("prizeNumber", prizeNumber);
         setResultMsg(`🎉 ${data[prizeNumber].option} 이 당첨되셨습니다! 🎉`);
         const pointData = data[prizeNumber].option;
         const pointsString = pointData.replace("점", "");
@@ -90,14 +90,14 @@ const Event = () => {
     }
 
     useEffect(() => {
-        console.log("point page");
+        // console.log("point page");
         dispatch(pointActions.getTotalPoints());
-        console.log("event page !! ", totalPoint, addPointList);
+        // console.log("event page !! ", totalPoint, addPointList);
         const dateList = addPointList
             ?.slice()
             .reverse()
             .map((item) => item.date.slice(0, 10));
-        console.log("dateList", dateList?.[0]);
+        // console.log("dateList", dateList?.[0]);
         const today = getToday();
         if (dateList?.[0] === today) {
             setIsChallenge(true);

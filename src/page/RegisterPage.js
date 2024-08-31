@@ -26,7 +26,7 @@ const RegisterPage = () => {
     }, []);
     const register = async (event) => {
         event.preventDefault();
-        console.log(formData);
+        // console.log(formData);
 
         const { email, name, password, confirmPassword, policy } = formData;
         // 비번 중복확인 일치하는지 확인
